@@ -105,8 +105,6 @@ void SPI_GPIO_Init(void)
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //SCK 推挽输出
 		GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-
-
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;  //MISO 输入 上拉
 		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;

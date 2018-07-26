@@ -79,6 +79,7 @@ void start_task(void *p_arg)
 	
 //	//创建扬声器任务
  err = BUZZ_task_create();
+
 // 
 // //创建LED任务
  err = LED_task_create();

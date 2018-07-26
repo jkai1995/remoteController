@@ -1,5 +1,7 @@
 #include "app_adc.h"
+
 #include "CReceiveSend.h"
+
 
 #define LEFT_X_AXIS  11  //左侧x方向对应AD通道11
 #define LEFT_Y_AXIS  10
@@ -18,7 +20,7 @@ CPU_STK ADC_TASK_STK[ADC_STK_SIZE];  //任务堆栈
 OS_ERR adc_task_create (void)
 {
 	  OS_ERR err;
-		
+
 		OSTaskCreate((OS_TCB 	* )&ADC_TaskTCB,		
 				 (CPU_CHAR	* )"Task2 adc", 		
                  (OS_TASK_PTR )adc_task, 			
@@ -47,8 +49,10 @@ void adc_task (void *p_arg)
 
 	u8 unlock = 0;
 	u8 lock = 0;
+
 	u8 buf[8];
 	CReceiveSend *send = CReceiveSend::getInstance();
+
 	Adc_Init();
 	
 	while(1)
@@ -176,9 +180,7 @@ void adc_task (void *p_arg)
 		}
 		
 		//lode_send_data(buf);
-		//send->sendData(buf,8);
-		
-		
+		send->sendData(buf,8);
 		OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err); //延时10ms
 		 //OSTimeDly(2,OS_OPT_TIME_PERIODIC,&err);   //延时10ms
 	}
