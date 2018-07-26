@@ -35,7 +35,7 @@ int main(void)
                  (CPU_STK_SIZE)START_STK_SIZE,		//任务堆栈大小
                  (OS_MSG_QTY  )0,					//任务内部消息队列能够接收的最大消息数目,为0时禁止接收消息
                  (OS_TICK	  )0,					//当使能时间片轮转时的时间片长度，为0时为默认长度，
-                 (void   	* )0,					//用户补充的存储区
+                 (void   	* )0,					//用户补充的存储区 
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, //任务选项
                  (OS_ERR 	* )&err);				//存放该函数错误时的返回值
 	OS_CRITICAL_EXIT();	//退出临界区	 
@@ -78,7 +78,7 @@ void start_task(void *p_arg)
   err = lcd_task_create();
 	
 //	//创建扬声器任务
-// err = BUZZ_task_create();
+ err = BUZZ_task_create();
 // 
 // //创建LED任务
  err = LED_task_create();

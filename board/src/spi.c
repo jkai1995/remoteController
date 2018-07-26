@@ -105,23 +105,57 @@ void SPI_GPIO_Init(void)
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //SCK 推挽输出
 		GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;  //IRQ 输入  上拉
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-		GPIO_Init(GPIOA, &GPIO_InitStructure);
 
+
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;  //MISO 输入 上拉
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 		GPIO_Init(GPIOD, &GPIO_InitStructure);
 //		NRF_CSN = 1;
 //		NRF_CE = 1;
 //		NRF_MOSI = 1;
 //		NRF_SCK = 1;
-		
-	
+		SPI_IRQ_EXTIX_Init();
+
 }
 
+void SPI_IRQ_EXTIX_Init(void)
+{
+	NVIC_InitTypeDef   NVIC_InitStructure;
+	EXTI_InitTypeDef   EXTI_InitStructure;
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;  //IRQ 输入  上拉
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);//使能SYSCFG时钟
+	
+	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource15);//PA15 连接到中断线15
+	/* 配置EXTI_Line0 */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line15;//LINE15
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发 
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE15
+  EXTI_Init(&EXTI_InitStructure);//配置
+	
+	NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;//外部中断0
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;//抢占优先级0
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;//子优先级2
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
+  NVIC_Init(&NVIC_InitStructure);//配置
+}
 
-
-
+extern void postSem(void);
+void EXTI15_10_IRQHandler(void)
+{
+	if(EXTI_GetITStatus(EXTI_Line15) == SET)
+	{
+		postSem();
+		EXTI_ClearITPendingBit(EXTI_Line15);
+	}
+}
 
 

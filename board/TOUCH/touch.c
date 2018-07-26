@@ -457,7 +457,8 @@ void TP_Adjust(void)
 u8 TP_Init(void)
 {
   GPIO_InitTypeDef  GPIO_InitStructure;	
-	
+	if(lcddev.id == 0xFFFF)
+		return 0;
 	if(lcddev.id==0X5510)		//µçÈÝ´¥ÃþÆÁ
 	{
 		if(GT9147_Init()==0)	//ÊÇGT9147

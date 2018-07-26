@@ -1,4 +1,5 @@
 #include "nRF24L01_API.h"
+#include "includes.h"
 //#include "main.h"
 #include"sys.h"
 #include"delay.h"
@@ -11,7 +12,7 @@
 const uchar TX_ADDRESS[TX_ADR_WIDTH]={0xFF,0xFF,0xFF,0xFF,0xFF}; //发送地址
 const uchar RX_ADDRESS[RX_ADR_WIDTH]={0xFF,0xFF,0xFF,0xFF,0xFF}; //发送地址
 
-
+OS_SEM nrf2401IrqSem;
 
 //void delay_us(uchar num)
 //{
@@ -130,6 +131,37 @@ uchar NRF24L01_RxPacket(uchar *rxbuf)
 	}	   
 	return 1;//没收到任何数据
 }
+
+
+OS_ERR pendingSem(void)
+{
+ OS_ERR err;
+	
+	//clear Sem
+	OSSemSet(&nrf2401IrqSem,
+						0,
+						&err);
+	
+	//needn't to pend
+	if(NRF_IRQ == 0)
+		return OS_ERR_STATUS_INVALID;
+	
+	//pending sem
+ OSSemPend(&nrf2401IrqSem,
+						2,
+						OS_OPT_PEND_BLOCKING,
+						NULL,
+						&err);
+ return err;
+}
+
+void postSem(void)
+{
+ OSSemPost(&nrf2401IrqSem,
+					 OS_OPT_POST_NONE,
+					 NULL);
+}
+
 /**********************************************/
 /* 函数功能：设置24L01为发送模式              */
 /* 入口参数：txbuf  发送数据数组              */
@@ -137,6 +169,7 @@ uchar NRF24L01_RxPacket(uchar *rxbuf)
 /*          0x20    成功发送完成              */
 /*          0xff    发送失败                  */
 /**********************************************/
+
 uchar NRF24L01_TxPacket(uchar *txbuf)
 {
 	uchar state;
@@ -144,7 +177,10 @@ uchar NRF24L01_TxPacket(uchar *txbuf)
 	NRF_CE=0;												//CE拉低，使能24L01配置
   	NRF24L01_Write_Buf(WR_TX_PLOAD,txbuf,TX_PLOAD_WIDTH);	//写数据到TX BUF  32个字节
  	NRF_CE=1;												//CE置高，使能发送	   
-	while(NRF_IRQ==1);										//等待发送完成
+	
+	//while(NRF_IRQ==1);	//等待发送完成
+	pendingSem();//等待发送完成
+	postSem();
 	state=NRF24L01_Read_Reg(STATUS);  						//读取状态寄存器的值	   
 	NRF24L01_Write_Reg(nRF_WRITE_REG+STATUS,state); 			//清除TX_DS或MAX_RT中断标志
 	if(state&MAX_TX)										//达到最大重发次数
@@ -188,6 +224,7 @@ uchar NRF24L01_Check(void)
 
 void NRF24L01_RT_Init(void)
 {	
+	OS_ERR err;
 	NRF_CE=0;		  
   	NRF24L01_Write_Reg(nRF_WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度
 		NRF24L01_Write_Reg(FLUSH_RX,0xff);									//清除RX FIFO寄存器    
@@ -200,6 +237,11 @@ void NRF24L01_RT_Init(void)
   	NRF24L01_Write_Reg(nRF_WRITE_REG+RF_SETUP,0x0F);  //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
   	NRF24L01_Write_Reg(nRF_WRITE_REG+CONFIG,0x0f);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,接收模式,开启所有中断
 	NRF_CE=1;									  //CE置高，使能发送
+	OSSemCreate(&nrf2401IrqSem,
+						"nrf2401 irq sem",
+						0,
+						&err);
+	 
 }
 
 void SEND_BUF(uchar *buf)

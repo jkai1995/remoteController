@@ -11,7 +11,6 @@ extern CPU_STK BUZZ_TASK_STK[BUZZ_STK_SIZE];  //ÈÎÎñ¶ÑÕ»
 
 extern u8 buzz_mode;
 extern u8 vibrates_mode;
-
 class Buzz
 {
 public:

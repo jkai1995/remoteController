@@ -29,7 +29,7 @@ OS_ERR BUZZ_task_create (void)
 
 u16 low_half_per[7]={1911,1702,1516,1431,1275,1136,1012};
 u16 hig_half_per[7]={477,425,379,357,318,284,253};
-float volume[7] = {0.01,0.01,0.01,0.01,0.01,0.01,0.01};
+float volume[7] = {0.005,0.005,0.005,0.005,0.005,0.005,0.005};
 
 void BUZZ_task (void *p_arg)
 {

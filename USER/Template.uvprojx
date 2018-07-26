@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,__FPU_USED=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\app\inc;..\board\inc;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M4\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Generic\RealView;..\board\TOUCH</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\app\inc;..\board\inc;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M4\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Generic\RealView;..\board\TOUCH;..\app\appNrf2401</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -448,6 +448,16 @@
               <FileName>app_vibrates .cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\app\scr\app_vibrates .cpp</FilePath>
+            </File>
+            <File>
+              <FileName>CReceiveSend.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\app\appNrf2401\CReceiveSend.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>CReceiveSend.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\app\appNrf2401\CReceiveSend.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -10,3 +10,5 @@
 *.lst
 *.lnp
 *.uvguix.*
+*.iex
+JLinkLog.txt
