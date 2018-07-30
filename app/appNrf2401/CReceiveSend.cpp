@@ -56,6 +56,7 @@ void CReceiveSend::sendData(u8 *data,u16 len )
 							 sizeof(m_sendMsg),
 							 OS_OPT_POST_FIFO,
 							 &err);
+							
 }
 
 void CReceiveSend::run(void)

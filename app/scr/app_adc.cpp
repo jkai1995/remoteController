@@ -57,11 +57,10 @@ void adc_task (void *p_arg)
 	
 	while(1)
 	{
-			
+		//rocker.left_x = Get_Adc(LEFT_X_AXIS);  //////采集通道1
 		rocker.left_x = Get_Adc(LEFT_X_AXIS);  //////采集通道1
 		rocker.left_y = Get_Adc(LEFT_Y_AXIS);////////采集通道2
 		rocker.right_x = Get_Adc(RIGHT_X_AXIS);/////采集通道3
-
 		rocker.right_y = Get_Adc(RIGHT_Y_AXIS);/////采集通道4
 		
 				
@@ -181,11 +180,11 @@ void adc_task (void *p_arg)
 		
 		//lode_send_data(buf);
 		send->sendData(buf,8);
-		OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err); //延时10ms
-		 //OSTimeDly(2,OS_OPT_TIME_PERIODIC,&err);   //延时10ms
+		//OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err); //延时10ms
+		OSTimeDly(2,OS_OPT_TIME_PERIODIC,&err);   //延时10ms
 	}
 }
-
+//memeset bzero
 
 
 
