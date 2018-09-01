@@ -31,7 +31,7 @@ uchar NRF24L01_RxPacket(uchar *rxbuf);
 uchar NRF24L01_TxPacket(uchar *txbuf);
 uchar NRF24L01_Check(void);
 void NRF24L01_RT_Init(void);
-void SEND_BUF(uchar *buf);
+uchar SEND_BUF(uchar *buf);
 
 #ifdef __cplusplus
 }

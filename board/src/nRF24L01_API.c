@@ -1,5 +1,6 @@
 #include "nRF24L01_API.h"
 #include "includes.h"
+#include "bsp_led.h"
 //#include "main.h"
 #include"sys.h"
 #include"delay.h"
@@ -148,7 +149,7 @@ OS_ERR pendingSem(void)
 	
 	//pending sem
  OSSemPend(&nrf2401IrqSem,
-						2,
+						100,//2
 						OS_OPT_PEND_BLOCKING,
 						NULL,
 						&err);
@@ -180,7 +181,7 @@ uchar NRF24L01_TxPacket(uchar *txbuf)
 	
 	//while(NRF_IRQ==1);	//等待发送完成
 	pendingSem();//等待发送完成
-	postSem();
+	//postSem();
 	state=NRF24L01_Read_Reg(STATUS);  						//读取状态寄存器的值	   
 	NRF24L01_Write_Reg(nRF_WRITE_REG+STATUS,state); 			//清除TX_DS或MAX_RT中断标志
 	if(state&MAX_TX)										//达到最大重发次数
@@ -243,15 +244,24 @@ void NRF24L01_RT_Init(void)
 						&err);
 	 
 }
-
-void SEND_BUF(uchar *buf)
+/**********************************************/
+/* 函数功能：设置24L01为发送模式              */
+/* 入口参数：txbuf  发送数据数组              */
+/* 返回值； 0x10    达到最大重发次数，发送失败*/
+/*          0x20    成功发送完成              */
+/*          0xff    发送失败                  */
+/**********************************************/
+uchar SEND_BUF(uchar *buf)
 {
+	uchar state;
 	NRF_CE=0;
 	NRF24L01_Write_Reg(nRF_WRITE_REG+CONFIG,0x0e);
 	NRF_CE=1;
 	delay_us(15);
-	NRF24L01_TxPacket(buf);
+	state = NRF24L01_TxPacket(buf);
 	NRF_CE=0;
 	NRF24L01_Write_Reg(nRF_WRITE_REG+CONFIG, 0x0f);
-	NRF_CE=1;	
+	NRF_CE=1;
+
+  return state;	
 }

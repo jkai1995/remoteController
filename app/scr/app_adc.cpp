@@ -178,7 +178,7 @@ void adc_task (void *p_arg)
 			lock = 0;
 		}
 		
-		//lode_send_data(buf);
+		lode_send_data(buf);
 		send->sendData(buf,8);
 		//OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err); //—” ±10ms
 		OSTimeDly(2,OS_OPT_TIME_PERIODIC,&err);   //—” ±10ms

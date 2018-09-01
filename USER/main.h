@@ -56,6 +56,10 @@ extern "C"
 #include "led.h"
 #include "app_vibrates.h"
 #include "control_data.h"
+
+#define MILISECON_PER_TICK (1000/OSCfg_TickRate_Hz)
+#define MILISECON_TO_TICK(a) (static_cast<u16>(a/(MILISECON_PER_TICK)))
+
 #endif
 
 

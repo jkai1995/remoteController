@@ -29,7 +29,7 @@ OS_ERR BUZZ_task_create (void)
 
 u16 low_half_per[7]={1911,1702,1516,1431,1275,1136,1012};
 u16 hig_half_per[7]={477,425,379,357,318,284,253};
-float volume[7] = {0.005,0.005,0.005,0.005,0.005,0.005,0.005};
+float volume[7] = {0.002,0.002,0.002,0.002,0.002,0.002,0.002};
 
 void BUZZ_task (void *p_arg)
 {
@@ -41,7 +41,7 @@ void BUZZ_task (void *p_arg)
 	{
 		if(buzz_mode == 1) //¿ª»ú
 		{
-			buzz.play(hig_half_per+5,volume,100,1);
+			//buzz.play(hig_half_per+5,volume,100,1);
 			OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_PERIODIC,&err); //ÑÓÊ±15ms
 		}
 		

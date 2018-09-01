@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-/////////////////按键检测//////////////////
+/////////////////led ucos task//////////
 #define LED_STK_SIZE 		128  //任务堆栈大小	
 extern OS_TCB LED_TaskTCB;  //任务控制块
 extern CPU_STK LED_TASK_STK[LED_STK_SIZE];  //任务堆栈	

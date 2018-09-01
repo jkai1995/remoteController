@@ -17,6 +17,7 @@ void LED_Init(void);
 void LEDOn(Led_Def Led);
 void LEDOff(Led_Def Led);
 void LEDTog(Led_Def Led);
+unsigned char isLEDOn(Led_Def Led);
 
 #endif 
 

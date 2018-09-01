@@ -41,5 +41,8 @@ void LEDTog(Led_Def Led)//LED×´Ì¬·­×ª
   	LED_PORT[Led]->ODR^=LED_PIN[Led];
 }
 
-
+unsigned char isLEDOn(Led_Def Led)
+{
+	return (LED_PORT[Led]->ODR&LED_PIN[Led]==0)?(0):(1);
+}
 
