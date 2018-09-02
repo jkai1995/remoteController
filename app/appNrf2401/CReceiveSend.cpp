@@ -59,6 +59,7 @@ void CReceiveSend::sendData(u8 *data,u16 len )
 
 }
 
+u8 rs_state;
 void CReceiveSend::run(void)
 {
 	OS_ERR err;
@@ -77,7 +78,8 @@ void CReceiveSend::run(void)
 		{
 			if(srMsg->eDataDire == eDataSend)
 			{
-				if(SEND_BUF(srMsg->data) == TX_OK)
+				rs_state = SEND_BUF(srMsg->data);
+				if(rs_state == TX_OK)
 				{
 					CLed::getInstance()->setledMode(CLed::ePowerOn);
 				}

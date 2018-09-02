@@ -41,15 +41,15 @@ void CLed::run()
 
 		if(m_eLedMod == ePowerOn)
 		{
-			LEDTog(LED0);
-			LEDTog(LED1);
-			LEDTog(LED2);
+			twinkle(1,1000);
 		}
 		else if(m_eLedMod == eTxFail)
 		{
-			twinkle(20,100);
 			m_eLedMod = ePowerOn;
+			twinkle(2,100);
+			
 		}
+
 	}
 }
 
@@ -63,6 +63,7 @@ void CLed::setledMode(ELedMod mod)
 		return;
 
 	OS_ERR err;
+	OSTaskSemSet(m_pTcb,0,&err);
 	OSTaskSemPost(m_pTcb,
 	              OS_OPT_POST_FIFO,
 	              &err);
@@ -76,7 +77,7 @@ void CLed::twinkle(u16 n,u16 tms)
 		LEDTog(LED0);
 		LEDTog(LED1);
 		LEDTog(LED2);
-		OSTimeDly(20,OS_OPT_TIME_DLY,&err);//MILISECON_TO_TICK(tms)
+		OSTimeDly(MILISECON_TO_TICK(tms),OS_OPT_TIME_DLY,&err);//MILISECON_TO_TICK(tms)
 	}
 }
 

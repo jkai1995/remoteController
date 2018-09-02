@@ -77,7 +77,7 @@ void lcd_task (void *p_arg)
 //////	
 //OS_CRITICAL_ENTER();//进入临界区
 rantime = run_time_us;
-TIM3_time_start();
+
 
 		sprintf((char *)str,"pr_ti:%8d",rantime);// 共14个字符
 		LCD_ShowString(0,240,168,24,24,str);	
@@ -89,7 +89,7 @@ TIM3_time_start();
 		//LCD_Fill(430,0,479,30,BROWN);
 		sprintf((char *)str,"Clear");// 共14个字符
 		LCD_ShowString(415,3,479,30,24,str);
-		run_time_us = TIM3_time_over();
+		
 		
 		//OS_CRITICAL_EXIT();	//退出临界区	
 		if(tp_dev.sta&0x80)////如果有按下

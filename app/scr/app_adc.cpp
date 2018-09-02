@@ -181,7 +181,9 @@ void adc_task (void *p_arg)
 		lode_send_data(buf);
 		send->sendData(buf,8);
 		//OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err); //—” ±10ms
-		OSTimeDly(2,OS_OPT_TIME_PERIODIC,&err);   //—” ±10ms
+		run_time_us = TIM3_time_over();
+		TIM3_time_start();
+		OSTimeDly(MILISECON_TO_TICK(10),OS_OPT_TIME_PERIODIC,&err);   //—” ±10ms
 	}
 }
 //memeset bzero
